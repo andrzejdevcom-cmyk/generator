@@ -1,0 +1,285 @@
+{
+  "project": {
+    "schema_version": 1,
+    "name": "I 260 mm — segmenty i łącznik",
+    "text": "I",
+    "font_id": "dejavu-sans-bold",
+    "mode": "led",
+    "height": 260.0,
+    "depth": 25.0,
+    "width_scale": 100.0,
+    "target_width": null,
+    "proportional": false,
+    "spacing": 2.0,
+    "line_spacing": 1.3,
+    "joined": false,
+    "base": false,
+    "base_depth": 8.0,
+    "base_thickness": 3.0,
+    "bridge_accents": false,
+    "bridge_width": 2.0,
+    "corner_radius": 0.0,
+    "wall": 2.0,
+    "back": 2.0,
+    "front": 1.2,
+    "clearance": 0.25,
+    "shelf_width": 1.0,
+    "shelf_thickness": 1.2,
+    "collar": false,
+    "body_color": "#263e40",
+    "front_color": "#f2e7cd",
+    "nozzle": 0.4,
+    "printer": [
+      180.0,
+      180.0,
+      180.0
+    ],
+    "segment": true,
+    "segment_size": 130.0,
+    "pin_diameter": 3.0,
+    "material_density": 1.24,
+    "price_per_kg": 85.0,
+    "led": {
+      "source": "strip",
+      "width": 10.0,
+      "height": 2.0,
+      "pcb_length": 30.0,
+      "mounting_points": 4,
+      "fixing": "guides",
+      "wire_exit": "end",
+      "watts_per_m": 9.6,
+      "voltage": 12,
+      "auto": false,
+      "placements": [],
+      "neon_paths": [],
+      "seat_depth": 5.0,
+      "clearance": 0.3,
+      "min_radius": 15.0,
+      "bend_direction": "side",
+      "cut_length": 25.0
+    }
+  },
+  "valid": true,
+  "parts": [
+    {
+      "id": "L1_1-diffuser-S1-1",
+      "name": "L1_1_I_DIFFUSER_S1_1",
+      "kind": "diffuser",
+      "color": "#f2e7cd",
+      "printable": true,
+      "bounds": [
+        [
+          2.25,
+          2.25,
+          23.8
+        ],
+        [
+          64.79622,
+          130.0,
+          25.0
+        ]
+      ],
+      "volume_mm3": 9588.341449187821,
+      "watertight": true,
+      "triangles": 12
+    },
+    {
+      "id": "L1_1-diffuser-S1-2",
+      "name": "L1_1_I_DIFFUSER_S1_2",
+      "kind": "diffuser",
+      "color": "#f2e7cd",
+      "printable": true,
+      "bounds": [
+        [
+          2.25,
+          130.0,
+          23.8
+        ],
+        [
+          64.79622,
+          257.75,
+          25.0
+        ]
+      ],
+      "volume_mm3": 9588.341449187821,
+      "watertight": true,
+      "triangles": 12
+    },
+    {
+      "id": "L1_1-body-S1-1",
+      "name": "L1_1_I_BODY_S1_1",
+      "kind": "body",
+      "color": "#263e40",
+      "printable": true,
+      "bounds": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          67.04622,
+          130.0,
+          25.0
+        ]
+      ],
+      "volume_mm3": 32659.13811711549,
+      "watertight": true,
+      "triangles": 452
+    },
+    {
+      "id": "L1_1-body-S1-2",
+      "name": "L1_1_I_BODY_S1_2",
+      "kind": "body",
+      "color": "#263e40",
+      "printable": true,
+      "bounds": [
+        [
+          0.0,
+          130.0,
+          0.0
+        ],
+        [
+          67.04622,
+          260.0,
+          25.0
+        ]
+      ],
+      "volume_mm3": 32659.13810335092,
+      "watertight": true,
+      "triangles": 452
+    },
+    {
+      "id": "L1_1-body-join-1",
+      "name": "L1_1_I_BODY_JOIN_1",
+      "kind": "joiner",
+      "color": "#263e40",
+      "printable": true,
+      "bounds": [
+        [
+          30.52311,
+          122.0,
+          -2.0
+        ],
+        [
+          36.52311,
+          138.0,
+          1.15
+        ]
+      ],
+      "volume_mm3": 192.70407208087252,
+      "watertight": true,
+      "triangles": 1028
+    }
+  ],
+  "issues": [
+    {
+      "severity": "info",
+      "code": "joiner_assembly",
+      "message": "Łączniki dwukołkowe są osobnymi częściami od tyłu. Zwiększają grubość montażową o 2 mm; fronty dzielone należy wkleić. Sprawdź próbę tolerancji.",
+      "element_id": null
+    },
+    {
+      "severity": "warning",
+      "code": "heat",
+      "message": "Sprawdź odprowadzanie ciepła LED, dopuszczalną temperaturę filamentu i rzeczywiste luzy po wydruku. Symulacja światła jest poglądowa.",
+      "element_id": null
+    }
+  ],
+  "outlines": [
+    {
+      "id": "L1_1",
+      "label": "I",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0.0,
+              260.0
+            ],
+            [
+              67.04621567314133,
+              260.0
+            ],
+            [
+              67.04621567314133,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              260.0
+            ]
+          ]
+        ]
+      }
+    }
+  ],
+  "cavity": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          2.0,
+          258.0
+        ],
+        [
+          65.04621567314133,
+          258.0
+        ],
+        [
+          65.04621567314133,
+          2.0
+        ],
+        [
+          2.0,
+          2.0
+        ],
+        [
+          2.0,
+          258.0
+        ]
+      ]
+    ]
+  },
+  "placements": [],
+  "neon_paths": [],
+  "stats": {
+    "bounds": [
+      [
+        0.0,
+        0.0,
+        -2.0
+      ],
+      [
+        67.04621887207031,
+        260.0,
+        25.0
+      ]
+    ],
+    "dimensions": [
+      67.04621887207031,
+      260.0,
+      27.0
+    ],
+    "volume_mm3": 84687.66,
+    "mass_g": 105.01,
+    "cost_pln": 8.93,
+    "mass_note": "Objętość brył × gęstość. Pełny materiał, bez ustawień wypełnienia i strat slicera.",
+    "printable_parts": 5,
+    "electrical": {
+      "length_mm": 0,
+      "sections_mm": [],
+      "pcb_count": 0,
+      "pcb_lengths_mm": [],
+      "power_w": 0.0,
+      "voltage": 12,
+      "wire_mm": 0.0,
+      "note": "Moc wg W/m (także dla PCB: wpisz wartość równoważną). Przewody: łańcuch między środkami +20%, bez dojścia do zasilacza. Nie jest to dobór zasilacza ani analiza cieplna."
+    }
+  }
+}
