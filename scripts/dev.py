@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     npm = shutil.which("npm.cmd" if os.name == "nt" else "npm")
     if not npm:
-        raise SystemExit("Brak npm: zainstaluj Node.js 22 lub 24 LTS.")
+        raise SystemExit("Brak npm: zainstaluj Node.js co najmniej 22.12; zalecane 24 lub 26 LTS.")
     processes = []
     try:
         processes.append(subprocess.Popen([sys.executable, "-m", "uvicorn", "backend.main:app", "--reload", "--host", "127.0.0.1", "--port", "8000"], cwd=ROOT))

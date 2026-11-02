@@ -15,6 +15,12 @@ if mode == 'missing':
 if mode == 'broken':
     print('not a Python version')
     sys.exit(0)
+if mode == 'node-fail':
+    sys.stderr.write('Node process failed\n')
+    sys.exit(17)
+if mode.startswith('node-'):
+    print(mode.removeprefix('node-'))
+    sys.exit(0)
 version = [3, 15, 0] if mode == 'new' else [3, 12, 10]
 print(json.dumps(dict(version=version, bits=32 if mode == '32' else 64)))
 '@ | Set-Content -LiteralPath $stub -Encoding UTF8
@@ -78,6 +84,45 @@ try {
             $parseErrors = $null
             $null = [Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$tokens, [ref]$parseErrors)
             Assert-True ($parseErrors.Count -eq 0) "Syntax error in $($file.Name)."
+        }
+    }
+    Test-Case 'reported user Node v22.23.4 is accepted by version output' {
+        $selected = Get-LetterMakerNode -Command $Python -Arguments @($stub, 'node-v22.23.4')
+        Assert-True ($selected.Version -eq 'v22.23.4') 'Rejected the user compatible Node version.'
+    }
+    Test-Case 'minimum 22.12 and newer LTS 24 and 26 are accepted' {
+        foreach ($version in @('v22.12.0', 'v24.22.2', 'v26.13.0')) {
+            $selected = Get-LetterMakerNode -Command $Python -Arguments @($stub, ('node-' + $version))
+            Assert-True ($selected.Version -eq $version) 'Rejected a supported Node version.'
+        }
+    }
+    Test-Case 'unsupported older Node reports its exact version' {
+        foreach ($version in @('v20.19.0', 'v22.11.0')) {
+            $message = ''
+            try { $null = Get-LetterMakerNode -Command $Python -Arguments @($stub, ('node-' + $version)) } catch { $message = $_.Exception.Message }
+            Assert-True ($message.Contains($version) -and $message.Contains('22.12')) 'Missing the actual unsupported version.'
+        }
+    }
+    Test-Case 'unusable Node process reports a probe error instead of a false version mismatch' {
+        $message = ''
+        try { $null = Get-LetterMakerNode -Command $Python -Arguments @($stub, 'node-fail') } catch { $message = $_.Exception.Message }
+        Assert-True ($message.Contains('Nie udalo sie odczytac')) 'Misreported the process failure as an unsupported version.'
+    }
+    Test-Case 'invalid Node output is rejected with an actionable diagnostic' {
+        $message = ''
+        try { $null = Get-LetterMakerNode -Command $Python -Arguments @($stub, 'node-invalid') } catch { $message = $_.Exception.Message }
+        Assert-True ($message.Contains('Nie rozpoznano') -and $message.Contains('node --version')) 'Missing diagnostic for invalid output.'
+    }
+    Test-Case 'actual installed Node is probed without inline JavaScript' {
+        $command = Get-Command node -CommandType Application | Select-Object -First 1
+        $selected = Get-LetterMakerNode -Command $command.Source
+        Assert-True ($selected.Version -match '^v\d+\.\d+\.\d+$') 'The real Node probe failed.'
+    }
+    Test-Case 'installer script text is safe under Windows PowerShell legacy encoding' {
+        foreach ($file in (Get-ChildItem -Path (Join-Path $projectRoot 'scripts/*.ps1'))) {
+            foreach ($byte in [IO.File]::ReadAllBytes($file.FullName)) {
+                Assert-True ($byte -lt 128) "Non-ASCII text without explicit encoding in $($file.Name)."
+            }
         }
     }
     Write-Host "$passed installer tests passed."

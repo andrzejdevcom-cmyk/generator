@@ -3,7 +3,7 @@
 ## Wersje
 
 - Python **3.12 x64**, `venv` i pip (Windows: dystrybucja python.org z launcherem `py`).
-- Node.js **22 lub 24 LTS**, npm. Instalacja przypięta przez `package-lock.json`.
+- Node.js **22.12 lub nowszy** (zalecane 24 lub 26 LTS), npm. Instalacja przypięta przez `package-lock.json`.
 - Przeglądarka z WebGL2. Bez WebGL pozostaje edytor 2D i eksport.
 - Biblioteki są w `requirements.txt`, razem z zależnościami testowymi. `uvloop` ma marker wykluczający Windows.
 
@@ -78,6 +78,8 @@ Do wewnętrznej kontroli użyj lokalnego żądania do `/api/health`, a potem wyw
 |---|---|
 | Brak Python/Node | Zainstaluj wymagane wersje, otwórz nowy terminal i ponów instalację. |
 | `No suitable Python runtime found` / zainstalowany tylko 3.15 | Doinstaluj 3.12 x64 obok obecnej wersji; sprawdź `py -3.12 --version`. |
+| Błąd wymagań Node pomimo `v22.23.4` | Ta wersja spełnia wymagania. Pobierz aktualny pakiet instalatora i rozpakuj go do nowego folderu. Nowy test czyta `node --version` i pokazuje używany plik `node.exe`. |
+| Komunikat zawiera `â€“` | Starszy skrypt był odczytany w innym kodowaniu przez Windows PowerShell. Aktualne skrypty używają tekstu ASCII, bez tego problematycznego znaku. |
 | Błąd pip/npm | Przeczytaj pierwszy błąd, sprawdź dostęp do PyPI/npm i proxy. Nie wyłączaj TLS. |
 | Zajęty port 8000 | Zamknij własną poprzednią instancję. Skrypt nie zabija cudzych procesów. |
 | Brak strony po zmianie frontendu | Wykonaj `npm --prefix frontend run build` i zrestartuj API. |

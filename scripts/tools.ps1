@@ -88,12 +88,36 @@ Nastepnie uruchom ponownie install.bat. Instrukcja: docs/INSTALLATION.md
 "@
 }
 
+function Get-LetterMakerNode {
+    param([string]$Command, [string[]]$Arguments = @())
+    # Read the version instead of running inline JavaScript through
+    # Windows' native command-line quoting rules.
+    $probe = Invoke-LetterMakerProbe -Command $Command -Arguments (@($Arguments) + @('--version'))
+    if ($probe.ExitCode -ne 0) {
+        throw "Nie udalo sie odczytac wersji Node.js z: $Command. Sprawdz polecenie node --version."
+    }
+    $version = $probe.Output.Trim()
+    $match = [regex]::Match($version, '^v?(\d+)\.(\d+)\.(\d+)$')
+    if (-not $match.Success) {
+        throw "Nie rozpoznano numeru wersji Node.js z: $Command. Sprawdz polecenie node --version."
+    }
+    $major = [int]$match.Groups[1].Value
+    $minor = [int]$match.Groups[2].Value
+    if ($major -lt 22 -or ($major -eq 22 -and $minor -lt 12)) {
+        throw "Wykryto Node.js $version. Wymagany Node.js 22.12 lub nowszy; zalecane 24 lub 26 LTS z nodejs.org. Uzywany plik: $Command"
+    }
+    return @{ Node = $Command; Version = $version }
+}
+
 function Get-LetterMakerTools {
     $python = Find-LetterMakerPython -Candidates @(Get-LetterMakerPythonCandidates)
     Write-Host "Python $($python.Version) (64-bit): OK" -ForegroundColor Green
-    if (-not (Get-Command node -CommandType Application -ErrorAction SilentlyContinue)) { throw 'Zainstaluj Node.js 22 lub 24 LTS z nodejs.org.' }
-    $node = Invoke-LetterMakerProbe -Command 'node' -Arguments @('-e', "const v=+process.versions.node.split('.')[0];process.exit(v>=22&&v<25?0:1)")
-    if ($node.ExitCode -ne 0) { throw 'Wymagany Node.js w wersji 22-24 (zalecana wersja LTS).' }
+    $nodeCommand = Get-Command node -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+    if (-not $nodeCommand) { throw 'Zainstaluj Node.js 22.12 lub nowszy; zalecane 24 lub 26 LTS z nodejs.org.' }
+    $node = Get-LetterMakerNode -Command $nodeCommand.Source
+    Write-Host "Node.js $($node.Version): OK ($($node.Node))" -ForegroundColor Green
     if (-not (Get-Command npm.cmd -ErrorAction SilentlyContinue)) { throw 'Brak npm.cmd. Zainstaluj ponownie Node.js wraz z npm.' }
+    $python.Node = $node.Node
+    $python.NodeVersion = $node.Version
     return $python
 }

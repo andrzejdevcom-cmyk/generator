@@ -12,7 +12,7 @@ Możesz też pobrać cały kod repozytorium przez **Code → Download ZIP**. Po 
 
 ## Uruchomienie na Windows x64
 
-1. Zainstaluj **Python 3.12 x64** i **Node.js 22 lub 24 LTS**, dodając je do PATH.
+1. Zainstaluj **Python 3.12 x64** i **Node.js co najmniej 22.12** (zalecane 24 lub 26 LTS), dodając je do PATH.
 2. Uruchom `install.bat` (pierwsza instalacja wymaga Internetu).
 3. Uruchom `start.bat`. Aplikacja otworzy przeglądarkę po potwierdzeniu gotowości API.
 
