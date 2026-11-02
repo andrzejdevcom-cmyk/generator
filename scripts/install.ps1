@@ -1,7 +1,12 @@
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
 . (Join-Path $PSScriptRoot 'tools.ps1')
-$tools = Get-LetterMakerTools
+try {
+    $tools = Get-LetterMakerTools
+} catch {
+    Write-Host $_.Exception.Message -ForegroundColor Red
+    exit 1
+}
 Push-Location -LiteralPath $projectRoot
 try {
     Write-Host '3DAS Letter Maker - instalacja zaleznosci' -ForegroundColor Cyan
@@ -12,8 +17,8 @@ try {
         & $pythonCommand @pythonArguments -m venv .venv
         if ($LASTEXITCODE -ne 0) { throw 'Nie udalo sie utworzyc srodowiska Python.' }
     }
-    & $venvPython -c "import sys; raise SystemExit(sys.version_info[:2] != (3,12))"
-    if ($LASTEXITCODE -ne 0) { throw 'Istniejacy .venv wymaga Python 3.12. Zachowaj swoje dane i odtworz .venv.' }
+    $venv = Invoke-LetterMakerProbe -Command $venvPython -Arguments @('-c', "import sys,struct; raise SystemExit(sys.version_info[:2] != (3,12) or struct.calcsize('P') != 8)")
+    if ($venv.ExitCode -ne 0) { throw 'Istniejacy .venv wymaga Python 3.12 (64-bit). Zmien nazwe katalogu .venv, aby go zachowac, i uruchom ponownie install.bat.' }
     & $venvPython -m pip install --disable-pip-version-check -r requirements.txt
     if ($LASTEXITCODE -ne 0) { throw 'Instalacja bibliotek Python nie powiodla sie. Sprawdz log powyzej i dostep do Internetu.' }
     Push-Location -LiteralPath (Join-Path $projectRoot 'frontend')

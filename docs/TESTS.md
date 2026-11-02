@@ -7,6 +7,7 @@
 - **31 testów pytest — zaliczone**, bez pominiętych/wyłączonych/oczekiwanych błędów.
 - **5 scenariuszy Playwright — zaliczone**: rzeczywisty Canvas/WebGL, PNG i pobranie ZIP/3MF/STL, ręczna edycja LED i undo, blokowanie błędnego montażu, zapis/otwarcie JSON, Neon Flex oraz ekran 390 px.
 - TypeScript i produkcyjny build Vite — zaliczone. Three.js jest ładowany osobno; Vite zgłasza ostrzeżenie o dużej paczce modułu 3D (~928 kB przed gzip).
+- **10 testów wykrywania Pythona — zaliczone w PowerShell 7.4.6 na Linux**: błąd launchera i fallback, 3.15 obok 3.12, wykryta niewłaściwa wersja, 32/64-bit, nieistniejący proces, ścieżki ze spacjami, prawdziwy interpreter 3.12, brak instalacji i parsowanie skryptów. To test logiki PowerShell i natywnych wywołań, nie pełna instalacja na Windows/PowerShell 5.1.
 - Pełny `bash scripts/install.sh` wykonany ponownie — zaliczony; npm ci i test rzeczywistych brył A przeszły.
 - Ponowny start przez `bash scripts/start.sh` oraz `scripts/smoke.py` — zaliczone: strona, identyfikacja API, kompletne bryły przykładowej A, montaż LED, ponowny odczyt pobranego 3MF.
 - `pip check` — brak uszkodzonych zależności.
@@ -40,6 +41,8 @@ Dodatkowo: ślepe kieszenie/kanały, keyhole i otwory, przelot przez dodatkową 
 Pierwszy triangulator tworzył niepoprawne pionowe krawędzie przy niektórych offsetach B/D i keyhole. Wyciąganie przeniesiono do CrossSection Manifold z regułą EvenOdd. Testy geometrii i kolizji ponownie przeszły, bez wyłączania asercji.
 
 Otwory przelotowe początkowo kończyły się na dnie litery po włączeniu dodatkowej płyty. Różnica jest teraz stosowana do całej zintegrowanej bryły, a test bada pustkę także w ujemnym Z płyty. PCB klejone jest na dnie; podniesienie 2 mm dotyczy tylko podstawek.
+
+Instalator Windows przerywał wykrywanie przy `py -3.12`, gdy launcher zgłaszał `No suitable Python runtime found`: ustawienie `Stop` zmieniało stderr w `NativeCommandError` przed dalszymi próbami i wyjaśnieniem. Próby interpretera mają teraz lokalną obsługę niepowodzenia, a końcowy komunikat pokazuje wykryte wersje i sposób doinstalowania 3.12. Weryfikowana jest także architektura 64-bit. Entry pointy pokazują czytelny komunikat zamiast stosu wyjątku.
 
 Ostrzeżenia wykonania testów: zależność Starlette zgłasza deprecjację aliasu AnyIO; trimesh zgłasza dzielenie przez zerową objętość przy mierzeniu pustego wyniku przecięcia brył w testach kolizji. Te przecięcia mają być puste; nie są eksportowanymi częściami. Nie wyłączano walidacji ani testów, aby uzyskać wynik dodatni.
 

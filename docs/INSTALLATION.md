@@ -29,6 +29,37 @@ Pop-Location
 
 Wymagana weryfikacja na rzeczywistym Windows: pierwsza instalacja, ponowne uruchomienie, ścieżka ze spacjami, Ctrl+C i program domyślnej przeglądarki. Sprawdzenie dostępności wheeli Windows wykonano w chmurze; nie zastępuje ono testu uruchomienia w Windows.
 
+### Wykrywanie Pythona
+
+Wymagana jest gałąź **3.12, 64-bit**. Python 3.15 nie jest traktowany jako jej zamiennik. Biblioteki geometrii i testy tej wersji projektu są przypięte do sprawdzonego środowiska 3.12.
+
+Jeśli widzisz `py.exe : No suitable Python runtime found`, launcher nie znalazł wymaganej wersji. W terminalu Windows uruchom:
+
+```powershell
+winget install --id Python.Python.3.12 --exact
+```
+
+Nie musisz usuwać już zainstalowanego 3.15. Jeśli korzystasz z Python Install Manager obsługującego polecenie `install`, możesz zamiast winget wykonać `py install 3.12`. Jeśli nie masz winget ani menedżera, skorzystaj z instalatora Windows x64 dla gałęzi 3.12 na python.org; zaznacz instalację launchera `py` i dodanie Pythona do PATH.
+
+Po instalacji zamknij terminal, otwórz nowy i wykonaj:
+
+```powershell
+py -3.12 --version
+py -3.12 -c "import struct; print(struct.calcsize('P') * 8)"
+```
+
+Oczekiwany wynik to `Python 3.12.x` i `64`. Następnie uruchom `install.bat` ponownie.
+
+Poprawiony instalator sprawdza istniejący `.venv`, standardowe wpisy rejestru, typowe katalogi instalacji, instalacje Python Install Manager, launcher i PATH. Błąd nieudanej próby `py -3.12` nie przerywa kolejnych prób. Komunikat końcowy rozróżnia niewłaściwą wersję, 32-bit i całkowity brak Pythona. Jeśli 3.12 już jest zainstalowany bez PATH, standardowa instalacja powinna zostać odnaleziona przez rejestr lub katalog.
+
+Test logiki wykrywania (PowerShell, z dowolnego systemu z Pythonem 3.12 x64):
+
+```powershell
+pwsh -NoProfile -File tests/windows-tools.tests.ps1 -Python python
+```
+
+Na Windows można użyć `powershell.exe` zamiast `pwsh`, wskazując w `-Python` ścieżkę do prawdziwego `python.exe` 3.12, również gdy znajduje się w katalogu ze spacjami. Testy symulują procesy z błędami i metadanymi innych wersji, a dodatkowo uruchamiają rzeczywisty interpreter. Nie instalują ani nie usuwają żadnego Pythona.
+
 ## Linux / macOS
 
 W katalogu projektu uruchom `bash scripts/install.sh` i `bash scripts/start.sh`. Skrypt oczekuje, że polecenie `python` wskazuje 3.12. Jeśli w systemie jest `python3.12`, utwórz nim `.venv` i wykonaj polecenia ręcznie. Zweryfikowano Linux x64; macOS nie testowano.
@@ -46,6 +77,7 @@ Do wewnętrznej kontroli użyj lokalnego żądania do `/api/health`, a potem wyw
 | Objaw | Działanie |
 |---|---|
 | Brak Python/Node | Zainstaluj wymagane wersje, otwórz nowy terminal i ponów instalację. |
+| `No suitable Python runtime found` / zainstalowany tylko 3.15 | Doinstaluj 3.12 x64 obok obecnej wersji; sprawdź `py -3.12 --version`. |
 | Błąd pip/npm | Przeczytaj pierwszy błąd, sprawdź dostęp do PyPI/npm i proxy. Nie wyłączaj TLS. |
 | Zajęty port 8000 | Zamknij własną poprzednią instancję. Skrypt nie zabija cudzych procesów. |
 | Brak strony po zmianie frontendu | Wykonaj `npm --prefix frontend run build` i zrestartuj API. |

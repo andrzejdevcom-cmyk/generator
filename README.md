@@ -6,7 +6,7 @@ Lokalna aplikacja CAD do generowania drukowalnych liter pełnych, pustych kaseto
 
 ## Pobieranie z GitHub
 
-Pobierz [gotowy pakiet ZIP](downloads/3DAS-Letter-Maker.zip). Na stronie pliku użyj przycisku **Download raw file** (ikona pobierania). Pakiet zawiera źródła, zbudowany interfejs, fonty z licencją, przykłady STL/3MF i instrukcję instalacji.
+Pobierz [gotowy pakiet ZIP](https://github.com/andrzejdevcom-cmyk/generator/raw/refs/heads/main/downloads/3DAS-Letter-Maker.zip). Pakiet zawiera źródła, zbudowany interfejs, fonty z licencją, przykłady STL/3MF i instrukcję instalacji.
 
 Możesz też pobrać cały kod repozytorium przez **Code → Download ZIP**. Po rozpakowaniu uruchom `install.bat`, a następnie `start.bat`.
 
@@ -16,9 +16,17 @@ Możesz też pobrać cały kod repozytorium przez **Code → Download ZIP**. Po 
 2. Uruchom `install.bat` (pierwsza instalacja wymaga Internetu).
 3. Uruchom `start.bat`. Aplikacja otworzy przeglądarkę po potwierdzeniu gotowości API.
 
+**Masz już Pythona 3.15 albo komunikat „No suitable Python runtime found”?** Projekt wymaga dokładnie **3.12 x64**; nowsza wersja nie zastępuje wymaganej wersji dla przypiętych bibliotek. Możesz zachować 3.15 i doinstalować 3.12 obok:
+
+```powershell
+winget install --id Python.Python.3.12 --exact
+```
+
+Otwórz nowy terminal, sprawdź `py -3.12 --version` i uruchom ponownie `install.bat`. Jeśli korzystasz z nowego Python Install Manager, możesz zamiast winget użyć `py install 3.12`. [Pełna diagnostyka instalacji](docs/INSTALLATION.md#wykrywanie-pythona).
+
 Frontend produkcyjny jest podawany przez FastAPI z tego samego adresu lokalnego. Nie trzeba konfigurować portów, kont, kluczy API ani edytować kodu. Zamknij serwer przez Ctrl+C. Ścieżki ze spacjami są uwzględnione w skryptach.
 
-**Zakres weryfikacji:** aplikację, build i testy wykonano w Linux/Python 3.12/Node 24/Chromium. Potwierdzono dostępność wszystkich przypiętych pakietów binarnych dla Windows x64/Python 3.12. Skryptów BAT/PowerShell nie uruchomiono na rzeczywistym Windows; ich weryfikacja na Windows pozostaje do wykonania.
+**Zakres weryfikacji:** aplikację, build i testy wykonano w Linux/Python 3.12/Node 24/Chromium. Potwierdzono dostępność wszystkich przypiętych pakietów binarnych dla Windows x64/Python 3.12. Logika wykrywania Pythona ma testy PowerShell; pełnych skryptów BAT/PowerShell nie uruchomiono na rzeczywistym Windows. Weryfikacja na Windows pozostaje do wykonania.
 
 ## Linux / środowisko chmurowe
 
